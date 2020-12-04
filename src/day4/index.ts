@@ -5,6 +5,16 @@ const fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"];
 
 const validEcl = "amb blu brn gry grn hzl oth".split(" ");
 
+const part1 = (str: string) => {
+    const splitStr = str
+        .split("\n")
+        .join(" ")
+        .split(" ")
+        .map(l => l.split(":"));
+    const mapped = splitStr.map(l => l[0]);
+    return !fields.reduce((acc, cur) => acc || !mapped.includes(cur), false);
+};
+
 const passwordValid = (str: string) => {
     const splitStr = str
         .split("\n")
@@ -53,9 +63,11 @@ const passwordValid = (str: string) => {
     }
     const hgtNum = newObj.hgt!.slice(0, -2);
     if (
-        isNaN(Number(hgtNum)) ||
-        newObj.hgt!.slice(-2) === "cm" ? Number(hgtNum) < 150 || Number(hgtNum) > 193 : false ||
-        newObj.hgt!.slice(-2) === "in" ? Number(hgtNum) < 59 || Number(hgtNum) > 76 : true
+        isNaN(Number(hgtNum)) || newObj.hgt!.slice(-2) === "cm"
+            ? Number(hgtNum) < 150 || Number(hgtNum) > 193
+            : false || newObj.hgt!.slice(-2) === "in"
+            ? Number(hgtNum) < 59 || Number(hgtNum) > 76
+            : true
     ) {
         return false;
     }
@@ -84,13 +96,20 @@ const main = async () => {
         .split("\n\n")
         .map(l => l.split("\n").join(" "));
 
-    console.log(input);
+    console.time("part1");
 
-    console.log(input.map(l => passwordValid(l)).filter(l => !!l).length);
+    console.log("Part 1", input.map(l => part1(l)).filter(l => !!l).length);
 
-    console.time("main");
+    console.timeEnd("part1");
 
-    console.timeEnd("main");
+    console.time("part2");
+
+    console.log(
+        "Part 2",
+        input.map(l => passwordValid(l)).filter(l => !!l).length
+    );
+
+    console.timeEnd("part2");
 };
 
 main();

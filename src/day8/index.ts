@@ -1,6 +1,24 @@
 import * as path from "path";
 import { readInputSplit } from "../helpers/readInput";
 
+const evaluateProgram = (program: string[][]) => {
+    let acc = 0;
+    let ip = 0;
+    while (ip < program.length) {
+        const opcode = program[ip][0];
+        const val = Number(program[ip][1]);
+        if (opcode === "acc") {
+            acc += val;
+            ip++;
+        } else if (opcode === "jmp") {
+            ip += val;
+        } else if (opcode === "nop") {
+            ip++;
+        }
+    }
+    return acc;
+};
+
 const part1 = (program: string[][]) => {
     let acc = 0;
     let ip = 0;
